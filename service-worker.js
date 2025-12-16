@@ -13,8 +13,8 @@ const assets = [
   "/video/game.mp4",
   "/video/main.mp4",
   "/font.woff2",
-  "/index.html",
   "/manifest.json",
+  "/index.html",
   "/style.css",
 ];
 self.addEventListener("install", (event) => {

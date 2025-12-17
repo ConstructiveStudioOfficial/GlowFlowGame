@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-const interactiveUI = new Audio("../audio/interactiveUI.mp3");
+const interactiveUI = new Audio("./audio/interactiveUI.mp3");
 function playinteractiveUIEffect() {
   interactiveUI.currentTime = 0;
   interactiveUI.play();

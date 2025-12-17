@@ -118,7 +118,7 @@ let isProcessingCollision = false,
   bestScore = parseInt(localStorage.getItem("bestScore")) || 0;
 pauseOverlay.id = "pause-overlay";
 backToHome.id = "back-to-home";
-backToHome.href = "/index.html";
+backToHome.href = "../index.html";
 pauseOverlay.textContent = "PAUSED";
 backToHome.textContent = "To Home";
 gameContainer.appendChild(pauseOverlay);
@@ -126,17 +126,17 @@ pauseOverlay.appendChild(backToHome);
 document.getElementById("best").textContent = `BEST: ${bestScore}`;
 engine.gravity.y = 0.7;
 World.add(engine.world, [ground, leftWall, rightWall, gameOverLine]);
-const explosionAudio = new Audio("/audio/explosion.mp3");
+const explosionAudio = new Audio("../audio/explosion.mp3");
 function playExplosionEffect() {
   explosionAudio.currentTime = 0;
   explosionAudio.play();
 }
-const collisionAudio = new Audio("/audio/collision.mp3");
+const collisionAudio = new Audio("../audio/collision.mp3");
 function playCollisionEffect() {
   collisionAudio.currentTime = 0;
   collisionAudio.play();
 }
-const interactiveUI = new Audio("/audio/interactiveUI.mp3");
+const interactiveUI = new Audio("../audio/interactiveUI.mp3");
 function playinteractiveUIEffect() {
   interactiveUI.currentTime = 0;
   interactiveUI.play();

@@ -11,12 +11,12 @@
   "categories": ["game", "arcade", "puzzle"],
   "icons": [
     {
-      "src": "/image/favicon.png",
+      "src": "image/favicon.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/image/logo.png",
+      "src": "image/logo.png",
       "sizes": "1080x1080",
       "type": "image/png"
     }

@@ -1,21 +1,21 @@
 const CACHE_NAME = "pwa-version-1";
 
 const assets = [
-  "/audio/collision.mp3",
-  "/audio/explosion.mp3",
-  "/audio/interactiveUI.mp3",
-  "/html/game.html",
-  "/image/favicon.png",
-  "/image/logo.png",
-  "/script/game.js",
-  "/script/matter.js",
-  "/script/script.js",
-  "/video/game.mp4",
-  "/video/main.mp4",
-  "/font.woff2",
-  "/manifest.json",
-  "/index.html",
-  "/style.css",
+  "audio/collision.mp3",
+  "audio/explosion.mp3",
+  "audio/interactiveUI.mp3",
+  "html/game.html",
+  "image/favicon.png",
+  "image/logo.png",
+  "script/game.js",
+  "script/matter.js",
+  "script/script.js",
+  "video/game.mp4",
+  "video/main.mp4",
+  "font.woff2",
+  "manifest.json",
+  "index.html",
+  "style.css",
 ];
 self.addEventListener("install", (event) => {
   console.log("Service Worker installing...");

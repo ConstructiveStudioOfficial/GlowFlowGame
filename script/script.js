@@ -9,7 +9,7 @@ const isStandalone =
 window.addEventListener("load", () => {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("../service-worker.js", { scope: "/" })
+      .register("/service-worker.js", { scope: "/" })
       .then((registration) => {
         console.log("SW registered with scope:", registration.scope);
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-const interactiveUI = new Audio("./audio/interactiveUI.mp3");
+const interactiveUI = new Audio("/audio/interactiveUI.mp3");
 function playinteractiveUIEffect() {
   interactiveUI.currentTime = 0;
   interactiveUI.play();

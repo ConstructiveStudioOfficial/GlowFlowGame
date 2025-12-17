@@ -98,7 +98,7 @@ const Engine = Matter.Engine,
     "trapezoid",
     "rhombus",
   ],
-  colorUnlockThresholds = [10, 20, 40, 80, 160, 320],
+  colorUnlockThresholds = [20, 40, 80, 160, 320, 640],
   pieces = [];
 let isProcessingCollision = false,
   isCheckingLines = false,
@@ -124,7 +124,7 @@ backToHome.textContent = "To Home";
 gameContainer.appendChild(pauseOverlay);
 pauseOverlay.appendChild(backToHome);
 document.getElementById("best").textContent = `BEST: ${bestScore}`;
-engine.gravity.y = 0.7;
+engine.gravity.y = 0.9;
 World.add(engine.world, [ground, leftWall, rightWall, gameOverLine]);
 const explosionAudio = new Audio("../audio/explosion.mp3");
 function playExplosionEffect() {

@@ -6,33 +6,6 @@ const isMobile =
 const isStandalone =
   window.navigator.standalone ||
   window.matchMedia("(display-mode: standalone)").matches;
-window.addEventListener("load", () => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker
-      .register("service-worker.js", { scope: "/" })
-      .then((registration) => {
-        console.log("SW registered with scope:", registration.scope);
-
-        if (navigator.serviceWorker.controller) {
-          console.log("Service Worker is controlling the page");
-        } else {
-          console.log("Service Worker not controlling the page yet");
-          registration.addEventListener("updatefound", () => {
-            const newWorker = registration.installing;
-            newWorker.addEventListener("statechange", () => {
-              if (newWorker.state === "activated") {
-                console.log("New Service Worker activated, reloading...");
-                window.location.reload();
-              }
-            });
-          });
-        }
-      })
-      .catch((registrationError) => {
-        console.log("SW registration failed:", registrationError);
-      });
-  }
-});
 document.addEventListener("DOMContentLoaded", function () {
   const modalContent = document.getElementById("license-modal");
   const agreeCheckbox = document.getElementById("license-agree");
@@ -89,3 +62,43 @@ bbb.addEventListener("click", () => {
 ccc.addEventListener("click", () => {
   playinteractiveUIEffect();
 });
+window.addEventListener("load", () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("service-worker.js", { scope: "/" })
+      .then((registration) => {
+        console.log("SW registered with scope:", registration.scope);
+
+        if (navigator.serviceWorker.controller) {
+          console.log("Service Worker is controlling the page");
+        } else {
+          console.log("Service Worker not controlling the page yet");
+          registration.addEventListener("updatefound", () => {
+            const newWorker = registration.installing;
+            newWorker.addEventListener("statechange", () => {
+              if (newWorker.state === "activated") {
+                console.log("New Service Worker activated, reloading...");
+                window.location.reload();
+              }
+            });
+          });
+        }
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed:", registrationError);
+      });
+  }
+});
+// if ("serviceWorker" in navigator) {
+//   window.addEventListener("load", () => {
+//     const swUrl = "service-worker.js";
+//     navigator.serviceWorker
+//       .register(swUrl)
+//       .then((registration) => {
+//         console.log("[SW] Registered successfully:", registration);
+//       })
+//       .catch((error) => {
+//         console.error("[SW] Registration failed:", error);
+//       });
+//   });
+// }

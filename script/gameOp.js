@@ -35,6 +35,9 @@ const Engine = Matter.Engine,
   restart = document.createElement("button"),
   gameWidth = gameContainer.clientWidth,
   gameHeight = gameContainer.clientHeight,
+  explosionAudio = new Audio("../audio/explosion.mp3"),
+  collisionAudio = new Audio("../audio/collision.mp3"),
+  interactiveUI = new Audio("../audio/interactiveUI.mp3"),
   render = Matter.Render.create({
     element: gameContainer,
     engine: engine,
@@ -114,37 +117,21 @@ let isProcessingCollision = false,
   scoreAnimationFrame,
   currentPiece,
   runner,
+  touchStartX,
+  touchStartY,
   colors = allColors.slice(0, unlockedColors),
   gameStartTime = Date.now(),
   bestScore = parseInt(localStorage.getItem("bestScore")) || 0;
 pauseOverlay.id = "pause-overlay";
-continueButton.id = "continueButton";
-continueButton.className = "link";
-restart.id = "restart";
-restart.className = "link";
-menu.id = "menu";
-menu.href = "../index.html";
-menu.className = "link";
 pauseOverlay.textContent = "PAUSED";
-menu.textContent = "MENU";
-restart.textContent = "RESTART";
-continueButton.textContent = "CONTINUE";
 gameContainer.appendChild(pauseOverlay);
-pauseOverlay.appendChild(continueButton);
-pauseOverlay.appendChild(restart);
-pauseOverlay.appendChild(menu);
 document.getElementById("best").textContent = `BEST: ${bestScore}`;
 engine.gravity.y = 0.7;
 World.add(engine.world, [ground, leftWall, rightWall, gameOverLine]);
-const explosionAudio = new Audio("../audio/explosion.mp3");
-const collisionAudio = new Audio("../audio/collision.mp3");
-const interactiveUI = new Audio("../audio/interactiveUI.mp3");
 function playinteractiveUIEffect() {
   interactiveUI.currentTime = 0;
   interactiveUI.play();
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }
+  // navigator.vibrate(50);
 }
 const links = document.querySelectorAll(".link");
 links.forEach((link) => {
@@ -381,9 +368,7 @@ function createExplosion(x, y, color) {
   explosion.style.top = `${y - 50}px`;
   explosion.style.boxShadow = `0 0 30px ${color}`;
   gameContainer.appendChild(explosion);
-  if (navigator.vibrate) {
-    navigator.vibrate(200, 0, 200);
-  }
+  // navigator.vibrate(200, 0, 200);
   explosionAudio.currentTime = 0;
   explosionAudio.play();
   setTimeout(() => {
@@ -455,9 +440,7 @@ Events.on(engine, "collisionStart", (event) => {
       currentPiece.isControlled = false;
       currentPiece = null;
     }
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
-    }
+    // navigator.vibrate(50);
     collisionAudio.currentTime = 0;
     collisionAudio.play();
     canSpawnNewPiece = true;
@@ -466,26 +449,7 @@ Events.on(engine, "collisionStart", (event) => {
     isProcessingCollision = false;
   }
 });
-continueButton.onclick = function () {
-  isPaused = !isPaused;
-  if (!gameActive) return;
-  const pauseIcon = document.querySelector("#pause-icon");
-  if (isPaused) {
-    pauseIcon.innerHTML = '<path d="M14 8 L33 22 L14 38"/>';
-  } else {
-    pauseIcon.innerHTML = '<rect x="14" y="8"/><rect x="26" y="8"/>';
-  }
-  if (isPaused) {
-    if (runner) Runner.stop(runner);
-    pauseOverlay.style.display = "flex";
-  } else {
-    if (!runner) runner = Runner.create();
-    Runner.run(runner, engine);
-    pauseOverlay.style.display = "none";
-  }
-};
 pauseButton.addEventListener("click", () => {
-  playinteractiveUIEffect();
   isPaused = !isPaused;
   if (!gameActive) return;
   const pauseIcon = document.querySelector("#pause-icon");
@@ -503,32 +467,6 @@ pauseButton.addEventListener("click", () => {
     pauseOverlay.style.display = "none";
   }
 });
-restart.onclick = function () {
-  if (runner) Runner.stop(runner);
-  const pauseIcon = document.querySelector("#pause-icon");
-  pauseIcon.innerHTML = '<rect x="14" y="8"/><rect x="26" y="8"/>';
-  Matter.Runner.stop(runner);
-  runner = Runner.create();
-  Composite.clear(engine.world, false);
-  restartButton.style.display = "none";
-  pauseOverlay.style.display = "none";
-  gameStartTime = Date.now();
-  fallenPiecesCount = 0;
-  displayedScore = 0;
-  pieces.length = 0;
-  score = 0;
-  unlockedColors = 4;
-  isPaused = false;
-  gameActive = true;
-  canSpawnNewPiece = true;
-  hasNewRecordInThisGame = false;
-  bestScore = parseInt(localStorage.getItem("bestScore")) || 0;
-  document.getElementById("best").textContent = `BEST: ${bestScore}`;
-  document.getElementById("score").textContent = "SCORE: 0";
-  World.add(engine.world, [ground, leftWall, rightWall, gameOverLine]);
-  colors = allColors.slice(0, unlockedColors);
-  Runner.run(runner, engine);
-};
 restartButton.addEventListener("click", () => {
   if (runner) Runner.stop(runner);
   Matter.Runner.stop(runner);
@@ -559,8 +497,6 @@ window.addEventListener("beforeunload", () => {
     localStorage.setItem("totalGames", totalGames.toString());
   }
 });
-let touchStartX;
-let touchStartY;
 gameContainer.addEventListener("touchstart", (e) => {
   if (!gameActive || !currentPiece || currentPiece.isSleeping) return;
   touchStartX = e.touches[0].clientX;

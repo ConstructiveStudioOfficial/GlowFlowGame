@@ -40,7 +40,9 @@ const interactiveUI = new Audio("audio/interactiveUI.mp3");
 function playinteractiveUIEffect() {
   interactiveUI.currentTime = 0;
   interactiveUI.play();
-  navigator.vibrate(50);
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
 }
 const licenseAgree = document.getElementById("license-agree");
 licenseAgree.addEventListener("click", () => {
@@ -50,17 +52,9 @@ const licenseConfirm = document.getElementById("license-confirm");
 licenseConfirm.addEventListener("click", () => {
   playinteractiveUIEffect();
 });
-const aaa = document.getElementById("???");
-const bbb = document.getElementById("play");
-const ccc = document.getElementById("shop");
-aaa.addEventListener("click", () => {
-  playinteractiveUIEffect();
-});
-bbb.addEventListener("click", () => {
-  playinteractiveUIEffect();
-});
-ccc.addEventListener("click", () => {
-  playinteractiveUIEffect();
+const links = document.querySelectorAll(".link");
+links.forEach((link) => {
+  link.addEventListener("click", playinteractiveUIEffect);
 });
 window.addEventListener("load", () => {
   if ("serviceWorker" in navigator) {
@@ -89,16 +83,3 @@ window.addEventListener("load", () => {
       });
   }
 });
-// if ("serviceWorker" in navigator) {
-//   window.addEventListener("load", () => {
-//     const swUrl = "service-worker.js";
-//     navigator.serviceWorker
-//       .register(swUrl)
-//       .then((registration) => {
-//         console.log("[SW] Registered successfully:", registration);
-//       })
-//       .catch((error) => {
-//         console.error("[SW] Registration failed:", error);
-//       });
-//   });
-// }
